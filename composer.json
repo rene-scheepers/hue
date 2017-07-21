@@ -1,0 +1,19 @@
+{
+  "name": "skeepaars/hue",
+  "description": "Library for connecting to Philips Hue",
+  "type": "library",
+  "authors": [
+    {
+      "name": "rrjjscheepers",
+      "email": "rrjjscheepers@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "": "src"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0"
+  }
+}
