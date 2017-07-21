@@ -4,6 +4,7 @@ namespace Skeepaars\Hue\Json;
 
 use Skeepaars\Hue\Models\Group;
 use Skeepaars\Hue\Models\Light;
+use Skeepaars\Hue\Models\RgbColor;
 
 final class Mapper
 {
@@ -32,6 +33,7 @@ final class Mapper
     public static function toLight(int $id, array $value): Light
     {
         print_r($value);
+
         return new Light(
             $id,
             static::toLightState($value['state']),
@@ -56,6 +58,10 @@ final class Mapper
             (bool)static::arrayValueOrElse('on', $value, true),
             static::arrayValueOrElse('bri', $value, 1),
             static::arrayValueOrElse('hue', $value, 0),
+            RgbColor::fromXY(
+                $value['xy'][0],
+                $value['xy'][1]
+            ),
             static::arrayValueOrElse('sat', $value, 0),
             static::arrayValueOrElse('ct', $value, 0),
             static::arrayValueOrElse('alert', $value, 'none'),

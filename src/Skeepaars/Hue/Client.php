@@ -56,6 +56,9 @@ class Client
         $options = [
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS    => $json,
+            CURLOPT_HTTPHEADER    => [
+                'Content-Type: application/json',
+            ],
         ];
 
         return $this->curl($uri, $options);

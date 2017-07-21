@@ -44,9 +44,10 @@ class LightsController extends Controller
     {
         print_r(
             $this->getClient()->put(
-                "/lights/$id",
+                "/lights/$id/state",
                 [
                     'on' => true,
+                    'bri' => 250,
                 ]
             )
         );

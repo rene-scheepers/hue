@@ -91,4 +91,19 @@ class RgbColor
     {
         return $this->hueY;
     }
+
+    public static function fromXY(float $x, float $y): self
+    {
+        $z = 1 - $x - $y;
+
+        $red   = $x * 1.656492 - $y * 0.354851 - $z * 0.255038;
+        $green = -$x * 0.707196 + $y * 1.655397 + $z * 0.036152;
+        $blue  = $x * 0.051713 - $y * 0121364 + $z * 1.011530;
+
+        return new self(
+            (int)$red,
+            (int)$green,
+            (int)$blue
+        );
+    }
 }

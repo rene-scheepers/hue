@@ -2,6 +2,8 @@
 
 namespace Skeepaars\Hue\Models\Light;
 
+use Skeepaars\Hue\Models\RgbColor;
+
 class State
 {
     /**
@@ -18,6 +20,11 @@ class State
      * @var int
      */
     private $hue;
+
+    /**
+     * @var RgbColor
+     */
+    private $rgb;
 
     /**
      * @var int
@@ -45,16 +52,17 @@ class State
     private $reachable;
 
     /**
-     * @param bool   $toggled
-     * @param int    $brightness
-     * @param int    $hue
-     * @param int    $saturation
-     * @param int    $colorTemperature
-     * @param string $alert
-     * @param string $effect
-     * @param bool   $reachable
+     * @param bool     $toggled
+     * @param int      $brightness
+     * @param int      $hue
+     * @param RgbColor $rgb
+     * @param int      $saturation
+     * @param int      $colorTemperature
+     * @param string   $alert
+     * @param string   $effect
+     * @param bool     $reachable
      */
-    public function __construct(bool $toggled, int $brightness, int $hue, int $saturation, int $colorTemperature, string $alert, string $effect, bool $reachable)
+    public function __construct(bool $toggled, int $brightness, int $hue, RgbColor $rgb, int $saturation, int $colorTemperature, string $alert, string $effect, bool $reachable)
     {
         $this->toggled          = $toggled;
         $this->brightness       = $brightness;
@@ -64,6 +72,7 @@ class State
         $this->alert            = $alert;
         $this->effect           = $effect;
         $this->reachable        = $reachable;
+        $this->rgb              = $rgb;
     }
 
     /**
@@ -88,6 +97,14 @@ class State
     public function getHue(): int
     {
         return $this->hue;
+    }
+
+    /**
+     * @return RgbColor
+     */
+    public function getRgb(): RgbColor
+    {
+        return $this->rgb;
     }
 
     /**
