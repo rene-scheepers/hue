@@ -14,6 +14,8 @@ final class Mapper
      * @param array $value
      *
      * @return Group
+     *
+     * @throws \Skeepaars\Hue\Lib\Exception
      */
     public static function toGroup(int $id, array $value): Group
     {
@@ -21,6 +23,8 @@ final class Mapper
             $id,
             $value['name'],
             array_map('intval', $value['lights']),
+            array_key_exists('class', $value) ? static::toRoomClass($value['class']) : null,
+            static::toGroupType($value['type']),
             static::toLightState($value['action'])
         );
     }
@@ -33,8 +37,6 @@ final class Mapper
      */
     public static function toLight(int $id, array $value): Light
     {
-        print_r($value);
-
         return new Light(
             $id,
             static::toLightState($value['state']),
@@ -75,6 +77,62 @@ final class Mapper
             static::arrayValueOrElse('effect', $value, 'none'),
             (bool)static::arrayValueOrElse('reachable', $value, false)
         );
+    }
+
+    /**
+     * @param Group\RoomClass $roomClass
+     *
+     * @return string
+     */
+    public static function fromRoomClass(Group\RoomClass $roomClass): string
+    {
+        $name = $roomClass->getName();
+
+        return ucfirst(strtolower(str_replace('_', ' ', $name)));
+    }
+
+    /**
+     * @param Group\Type $groupType
+     *
+     * @return string
+     */
+    public static function fromGroupType(Group\Type $groupType): string
+    {
+        $name        = $groupType->getName();
+        $nameUcWords = ucwords(strtolower($name), "_");
+
+        return str_replace('_', '', $nameUcWords);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return Group\RoomClass
+     *
+     * @throws \Skeepaars\Hue\Lib\Exception
+     */
+    private static function toRoomClass(string $value): Group\RoomClass
+    {
+        $searchValue = strtoupper(str_replace(' ', '_', $value));
+
+        return Group\RoomClass::byName($searchValue);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return Group\Type
+     *
+     * @throws \Skeepaars\Hue\Lib\Exception
+     */
+    private static function toGroupType(string $value): Group\Type
+    {
+        $searchValue = strtoupper($value);
+        if ($searchValue === 'LIGHTGROUP') {
+            $searchValue = 'LIGHT_GROUP';
+        }
+
+        return Group\Type::byName($searchValue);
     }
 
     /**

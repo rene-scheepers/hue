@@ -17,7 +17,7 @@ class LightsController extends Controller
      *
      * @throws Exception
      */
-    public function getLights(): array
+    public function get(): array
     {
         $response = $this->getClient()->get("/lights");
 
@@ -36,7 +36,7 @@ class LightsController extends Controller
      *
      * @throws Exception
      */
-    public function getLight(int $id): Light
+    public function getById(int $id): Light
     {
         $response = $this->getClient()->get("/lights/$id");
 
@@ -50,7 +50,7 @@ class LightsController extends Controller
      * @throws Models\Exceptions\HueRequestException
      * @throws Models\Exceptions\HueResourceNotFoundException
      */
-    public function toggleLightOff(int $id)
+    public function toggleOff(int $id)
     {
         $this->getClient()->put(
             "/lights/$id/state",
@@ -97,6 +97,36 @@ class LightsController extends Controller
             "/lights/$id/state",
             $parameters
         );
+    }
+
+    /**
+     * @param int    $id
+     * @param string $name
+     *
+     * @throws Models\Exceptions\CouldNotDecodeJsonException
+     * @throws Models\Exceptions\HueRequestException
+     * @throws Models\Exceptions\HueResourceNotFoundException
+     */
+    public function rename(int $id, string $name)
+    {
+        $this->getClient()->put(
+            "/lights/$id",
+            [
+                "name" => $name,
+            ]
+        );
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws Models\Exceptions\CouldNotDecodeJsonException
+     * @throws Models\Exceptions\HueRequestException
+     * @throws Models\Exceptions\HueResourceNotFoundException
+     */
+    public function delete(int $id)
+    {
+        $this->getClient()->delete("/lights/$id");
     }
 
 }

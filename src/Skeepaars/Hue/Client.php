@@ -65,6 +65,49 @@ class Client
     }
 
     /**
+     * @param string $uri
+     * @param        $body
+     *
+     * @return mixed
+     *
+     * @throws CouldNotDecodeJsonException
+     * @throws HueRequestException
+     * @throws HueResourceNotFoundException
+     */
+    public function post(string $uri, $body)
+    {
+        $json = json_encode($body);
+
+        $options = [
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS    => $json,
+            CURLOPT_HTTPHEADER    => [
+                'Content-Type: application/json',
+            ],
+        ];
+
+        return $this->curl($uri, $options);
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @return mixed
+     *
+     * @throws CouldNotDecodeJsonException
+     * @throws HueRequestException
+     * @throws HueResourceNotFoundException
+     */
+    public function delete(string $uri)
+    {
+        $options = [
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+        ];
+
+        return $this->curl($uri, $options);
+    }
+
+    /**
      * @param array $options
      *
      * @return mixed
