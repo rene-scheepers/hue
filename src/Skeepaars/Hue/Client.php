@@ -108,10 +108,10 @@ class Client
     }
 
     /**
-     * @param array $options
+     * @param string $uri
+     * @param array  $options
      *
      * @return mixed
-     *
      * @throws CouldNotDecodeJsonException
      * @throws HueRequestException
      * @throws HueResourceNotFoundException

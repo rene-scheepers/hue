@@ -58,7 +58,7 @@ abstract class Enum
      *
      * @throws Exception
      */
-    public static function byName(string $name): self
+    public static function byName(string $name)
     {
         $instances = static::getInstancesForClass(get_called_class());
 
