@@ -9,7 +9,7 @@ use Skeepaars\Hue\Models\Exception;
 use Skeepaars\Hue\Models\Light;
 use Skeepaars\Hue\Models\RgbColor;
 
-class ScenesController extends Controller
+class SensorsController extends Controller
 {
 
     public function get()
