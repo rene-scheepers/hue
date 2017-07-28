@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Skeepaars\Hue\Json;
 
@@ -54,14 +55,20 @@ final class Mapper
      */
     private static function toLightState(array $value): Light\State
     {
+        if (array_key_exists('xy', $value)) {
+            $rgb = RgbColor::fromXY(
+                $value['xy'][0],
+                $value['xy'][1]
+            );
+        } else {
+            $rgb = null;
+        }
+
         return new Light\State(
             (bool)static::arrayValueOrElse('on', $value, true),
             static::arrayValueOrElse('bri', $value, 1),
             static::arrayValueOrElse('hue', $value, 0),
-            RgbColor::fromXY(
-                $value['xy'][0],
-                $value['xy'][1]
-            ),
+            $rgb,
             static::arrayValueOrElse('sat', $value, 0),
             static::arrayValueOrElse('ct', $value, 0),
             static::arrayValueOrElse('alert', $value, 'none'),

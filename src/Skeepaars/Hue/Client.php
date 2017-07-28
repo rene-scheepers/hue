@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Skeepaars\Hue;
 
@@ -12,7 +13,6 @@ class Client
      * @var string
      */
     private $baseUri;
-
 
     /**
      * @param string $bridgeUri
@@ -80,8 +80,6 @@ class Client
                 CURLOPT_URL            => $this->baseUri . $uri,
                 CURLOPT_RETURNTRANSFER => true,
             ] + $options;
-
-        print_r($options);
 
         try {
             curl_setopt_array($curlHandle, $options);

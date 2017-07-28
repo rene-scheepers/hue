@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Skeepaars\Hue\Models\Light;
 
@@ -22,7 +23,7 @@ class State
     private $hue;
 
     /**
-     * @var RgbColor
+     * @var RgbColor|null
      */
     private $rgb;
 
@@ -52,17 +53,17 @@ class State
     private $reachable;
 
     /**
-     * @param bool     $toggled
-     * @param int      $brightness
-     * @param int      $hue
-     * @param RgbColor $rgb
-     * @param int      $saturation
-     * @param int      $colorTemperature
-     * @param string   $alert
-     * @param string   $effect
-     * @param bool     $reachable
+     * @param bool          $toggled
+     * @param int           $brightness
+     * @param int           $hue
+     * @param RgbColor|null $rgb
+     * @param int           $saturation
+     * @param int           $colorTemperature
+     * @param string        $alert
+     * @param string        $effect
+     * @param bool          $reachable
      */
-    public function __construct(bool $toggled, int $brightness, int $hue, RgbColor $rgb, int $saturation, int $colorTemperature, string $alert, string $effect, bool $reachable)
+    public function __construct(bool $toggled, int $brightness, int $hue, ?RgbColor $rgb, int $saturation, int $colorTemperature, string $alert, string $effect, bool $reachable)
     {
         $this->toggled          = $toggled;
         $this->brightness       = $brightness;
@@ -100,9 +101,9 @@ class State
     }
 
     /**
-     * @return RgbColor
+     * @return RgbColor|null
      */
-    public function getRgb(): RgbColor
+    public function getRgb(): ?RgbColor
     {
         return $this->rgb;
     }
