@@ -95,6 +95,7 @@ class RgbColor
 
     public static function fromXY(float $x, float $y): self
     {
+        /** Calculation from @link https://developers.meethue.com/documentation/color-conversions-rgb-xy */
         $z = 1 - $x - $y;
 
         $red   = $x * 1.656492 - $y * 0.354851 - $z * 0.255038;
