@@ -3,11 +3,7 @@ declare(strict_types=1);
 
 namespace Skeepaars\Hue;
 
-use InvalidArgumentException;
 use Skeepaars\Hue\Json\Mapper;
-use Skeepaars\Hue\Models\Exception;
-use Skeepaars\Hue\Models\Light;
-use Skeepaars\Hue\Models\RgbColor;
 use Skeepaars\Hue\Models\Sensor;
 
 class SensorsController extends Controller
