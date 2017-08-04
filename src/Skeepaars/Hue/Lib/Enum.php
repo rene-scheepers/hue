@@ -60,25 +60,22 @@ abstract class Enum
      */
     public static function byName(string $name)
     {
-        $instances = static::getInstancesForClass(get_called_class());
+        $instances = static::getInstances();
 
         if (array_key_exists($name, $instances)) {
             return $instances[$name];
         } else {
-            echo $name;
-
-            print_r(self::$instances);
             throw new Exception("Enum with name: '$name' does not exist");
         }
     }
 
     /**
-     * @param string $class
-     *
-     * @return array
+     * @return $this[]
      */
-    private static function getInstancesForClass(string $class)
+    public static function getInstances()
     {
+        $class = get_called_class();
+
         if (!array_key_exists($class, self::$instances)) {
             $reflectionClass = new ReflectionClass($class);
             $constants       = $reflectionClass->getConstants();

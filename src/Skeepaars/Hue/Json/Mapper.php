@@ -6,6 +6,7 @@ namespace Skeepaars\Hue\Json;
 use Skeepaars\Hue\Models\Group;
 use Skeepaars\Hue\Models\Light;
 use Skeepaars\Hue\Models\RgbColor;
+use Skeepaars\Hue\Models\Sensor;
 
 final class Mapper
 {
@@ -50,6 +51,41 @@ final class Mapper
         );
     }
 
+    public static function toSensor(int $id, array $value): Sensor
+    {
+        return new Sensor(
+            $id,
+            $value['name'],
+            static::toSensorType($value['type']),
+            static::toConfiguration($value['config'])
+        );
+    }
+
+    /**
+     * @param Group\RoomClass $roomClass
+     *
+     * @return string
+     */
+    public static function fromRoomClass(Group\RoomClass $roomClass): string
+    {
+        $name = $roomClass->getName();
+
+        return ucfirst(strtolower(str_replace('_', ' ', $name)));
+    }
+
+    /**
+     * @param Group\Type $groupType
+     *
+     * @return string
+     */
+    public static function fromGroupType(Group\Type $groupType): string
+    {
+        $name        = $groupType->getName();
+        $nameUcWords = ucwords(strtolower($name), "_");
+
+        return str_replace('_', '', $nameUcWords);
+    }
+
     /**
      * @param array $value
      *
@@ -77,31 +113,6 @@ final class Mapper
             static::arrayValueOrElse('effect', $value, 'none'),
             (bool)static::arrayValueOrElse('reachable', $value, false)
         );
-    }
-
-    /**
-     * @param Group\RoomClass $roomClass
-     *
-     * @return string
-     */
-    public static function fromRoomClass(Group\RoomClass $roomClass): string
-    {
-        $name = $roomClass->getName();
-
-        return ucfirst(strtolower(str_replace('_', ' ', $name)));
-    }
-
-    /**
-     * @param Group\Type $groupType
-     *
-     * @return string
-     */
-    public static function fromGroupType(Group\Type $groupType): string
-    {
-        $name        = $groupType->getName();
-        $nameUcWords = ucwords(strtolower($name), "_");
-
-        return str_replace('_', '', $nameUcWords);
     }
 
     /**
@@ -133,6 +144,41 @@ final class Mapper
         }
 
         return Group\Type::byName($searchValue);
+    }
+
+    /**
+     * @param array $value
+     *
+     * @return Sensor\Configuration
+     */
+    private static function toConfiguration(array $value): Sensor\Configuration
+    {
+        return new Sensor\Configuration(
+            static::arrayValueOrElse('on', $value, false),
+            static::arrayValueOrElse('reachable', $value, false),
+            static::arrayValueOrElse('battery', $value, null)
+        );
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return Sensor\Type
+     */
+    private static function toSensorType(string $value): Sensor\Type
+    {
+        $sensorTypes = Sensor\Type::getInstances();
+        $needle      = strtoupper($value);
+
+        foreach ($sensorTypes as $sensorType) {
+            $haystackValue = str_replace("_", "", $sensorType->getName());
+
+            if ($haystackValue === $needle) {
+                return $sensorType;
+            }
+        }
+
+        return Sensor\Type::CLIP_GENERIC_FLAG();
     }
 
     /**
